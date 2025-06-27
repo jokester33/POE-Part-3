@@ -493,5 +493,58 @@ namespace CyberSecurityChatbotWPF
             }
             QuizFeedbackTextBlock.Text = "";
         }
- 
+        private void QuizAnswerButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int answerIndex)
+            {
+                QuizQuestion q = quizQuestions[currentQuizIndex];
+                if (answerIndex == q.CorrectIndex)
+                {
+                    quizScore++;
+                    QuizFeedbackTextBlock.Text = q.Explanation;
+                }
+                else
+                {
+                    QuizFeedbackTextBlock.Text = $"Wrong. {q.Explanation}";
+                }
+
+                // Disable buttons
+                foreach (Button b in QuizAnswersPanel.Children)
+                    b.IsEnabled = false;
+
+                NextQuestionButton.IsEnabled = true;
+
+                AddActivity($"Quiz question {currentQuizIndex + 1} answered.");
+            }
+        }
+
+        private void NextQuestionButton_Click(object sender, RoutedEventArgs e)
+        {
+            currentQuizIndex++;
+            NextQuestionButton.IsEnabled = false;
+
+            if (currentQuizIndex < quizQuestions.Count)
+                ShowQuestion();
+            else
+                ShowQuizResult();
+        }
+
+        void ShowQuizResult()
+        {
+            QuizQuestionTextBlock.Text = "Quiz complete!";
+            QuizAnswersPanel.Children.Clear();
+            QuizFeedbackTextBlock.Text = $"You scored {quizScore} out of {quizQuestions.Count}.";
+            QuizScoreTextBlock.Visibility = Visibility.Visible;
+            QuizScoreTextBlock.Text = quizScore switch
+            {
+                >= 9 => "Great job! You're a cybersecurity pro!",
+                >= 6 => "Good effort! Keep learning to stay safe online!",
+                _ => "Keep practicing to improve your cybersecurity knowledge."
+            };
+            StartQuizButton.IsEnabled = true;
+
+            AddActivity($"Quiz completed with score {quizScore}/{quizQuestions.Count}.");
+        }
+
+
 
