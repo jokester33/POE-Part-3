@@ -363,3 +363,93 @@ namespace CyberSecurityChatbotWPF
                 AddActivity($"Marked task as incomplete: '{task.Title}'");
             }
         }
+
+        // QUIZ LOGIC
+
+        void InitQuizQuestions()
+        {
+            quizQuestions = new List<QuizQuestion>
+            {
+                new QuizQuestion
+                {
+                    Question = "What should you do if you receive an email asking for your password?",
+                    Answers = new List<string> { "Reply with your password", "Delete the email", "Report the email as phishing", "Ignore it" },
+                    CorrectIndex = 2,
+                    IsTrueFalse = false,
+                    Explanation = "Correct! Reporting phishing emails helps prevent scams."
+                },
+                new QuizQuestion
+                {
+                    Question = "True or False: You should never share your passwords with anyone.",
+                    Answers = new List<string> { "True", "False" },
+                    CorrectIndex = 0,
+                    IsTrueFalse = true,
+                    Explanation = "Correct! Passwords should always be kept private."
+                },
+                new QuizQuestion
+                {
+                    Question = "Which is the strongest password?",
+                    Answers = new List<string> { "password123", "MyName2023", "G!7$w9#X", "123456" },
+                    CorrectIndex = 2,
+                    IsTrueFalse = false,
+                    Explanation = "Correct! A strong password contains a mix of symbols, letters, and numbers."
+                },
+                new QuizQuestion
+                {
+                    Question = "What is phishing?",
+                    Answers = new List<string> { "A sport", "A scam to get sensitive information", "A programming language", "A type of virus" },
+                    CorrectIndex = 1,
+                    IsTrueFalse = false,
+                    Explanation = "Correct! Phishing is a scam to trick users into giving out personal info."
+                },
+                new QuizQuestion
+                {
+                    Question = "Using the same password for multiple accounts is:",
+                    Answers = new List<string> { "Recommended", "Risky and unsafe" },
+                    CorrectIndex = 1,
+                    IsTrueFalse = true,
+                    Explanation = "Correct! Reusing passwords puts you at risk."
+                },
+                new QuizQuestion
+                {
+                    Question = "VPN stands for:",
+                    Answers = new List<string> { "Virtual Private Network", "Very Private Network" },
+                    CorrectIndex = 0,
+                    IsTrueFalse = true,
+                    Explanation = "Correct! VPN encrypts your internet connection."
+                },
+                new QuizQuestion
+                {
+                    Question = "True or False: Public Wi-Fi is always safe to use without precautions.",
+                    Answers = new List<string> { "True", "False" },
+                    CorrectIndex = 1,
+                    IsTrueFalse = true,
+                    Explanation = "Correct! Public Wi-Fi can be insecure."
+                },
+                new QuizQuestion
+                {
+                    Question = "What is multi-factor authentication?",
+                    Answers = new List<string> { "Logging in with username only", "Using multiple methods to verify identity", "Using one password for all sites" },
+                    CorrectIndex = 1,
+                    IsTrueFalse = false,
+                    Explanation = "Correct! MFA increases account security."
+                },
+                new QuizQuestion
+                {
+                    Question = "Malware is:",
+                    Answers = new List<string> { "A helpful tool", "Malicious software", "A type of hardware" },
+                    CorrectIndex = 1,
+                    IsTrueFalse = false,
+                    Explanation = "Correct! Malware is harmful software."
+                },
+                new QuizQuestion
+                {
+                    Question = "Safe browsing means:",
+                    Answers = new List<string> { "Visiting only secure https websites", "Clicking any link", "Ignoring browser warnings" },
+                    CorrectIndex = 0,
+                    IsTrueFalse = false,
+                    Explanation = "Correct! Only visit secure sites."
+                }
+            };
+        }
+
