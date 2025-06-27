@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace CyberSecurityChatbotWPF
+namespace Part_3
 {
     public partial class MainWindow : Window
     {
@@ -37,7 +37,7 @@ namespace CyberSecurityChatbotWPF
         string favoriteTopic = "";
         readonly Random rnd = new();
 
-        //  Task Assistant Data 
+        // Task Assistant Data 
         public class TaskItem
         {
             public string Title { get; set; }
@@ -48,7 +48,7 @@ namespace CyberSecurityChatbotWPF
         }
         List<TaskItem> tasks = new();
 
-        // Activity Log Data 
+        //  Activity Log Data 
         public class ActivityLogEntry
         {
             public DateTime Time { get; set; }
@@ -193,7 +193,7 @@ namespace CyberSecurityChatbotWPF
             return "I didn't quite understand that. Could you please rephrase? I'm here to answer your cybersecurity questions.";
         }
 
-        // CHATBOT UI HANDLERS
+        //  CHATBOT UI HANDLERS 
 
         void AddChatbotMessage(string message)
         {
@@ -283,6 +283,7 @@ namespace CyberSecurityChatbotWPF
                 AddActivity("Chatbot gave a fallback response.");
             }
         }
+
         // TASK ASSISTANT 
 
         private bool TryHandleTaskCommands(string input)
@@ -452,6 +453,7 @@ namespace CyberSecurityChatbotWPF
                 }
             };
         }
+
         private void StartQuizButton_Click(object sender, RoutedEventArgs e)
         {
             quizScore = 0;
@@ -493,6 +495,7 @@ namespace CyberSecurityChatbotWPF
             }
             QuizFeedbackTextBlock.Text = "";
         }
+
         private void QuizAnswerButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int answerIndex)
@@ -546,5 +549,19 @@ namespace CyberSecurityChatbotWPF
             AddActivity($"Quiz completed with score {quizScore}/{quizQuestions.Count}.");
         }
 
+        //  ACTIVITY LOG
 
+        void AddActivity(string description)
+        {
+            activityLog.Insert(0, new ActivityLogEntry { Time = DateTime.Now, Description = description });
+            if (activityLog.Count > 10)
+                activityLog.RemoveAt(activityLog.Count - 1);
+        }
 
+        void ShowActivityLog()
+        {
+            ActivityLogListBox.ItemsSource = null;
+            ActivityLogListBox.ItemsSource = activityLog;
+        }
+    }
+}
