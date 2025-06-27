@@ -452,4 +452,46 @@ namespace CyberSecurityChatbotWPF
                 }
             };
         }
+        private void StartQuizButton_Click(object sender, RoutedEventArgs e)
+        {
+            quizScore = 0;
+            currentQuizIndex = 0;
+            QuizScoreTextBlock.Visibility = Visibility.Collapsed;
+            QuizFeedbackTextBlock.Text = "";
+            NextQuestionButton.IsEnabled = false;
+            StartQuizButton.IsEnabled = false;
+            MainTabControl.SelectedIndex = 2; // Stay on Quiz tab
+
+            ShowQuestion();
+            AddActivity("Quiz started.");
+        }
+
+        void ShowQuestion()
+        {
+            if (currentQuizIndex >= quizQuestions.Count)
+            {
+                ShowQuizResult();
+                return;
+            }
+
+            QuizQuestion q = quizQuestions[currentQuizIndex];
+            QuizQuestionTextBlock.Text = q.Question;
+
+            QuizAnswersPanel.Children.Clear();
+
+            for (int i = 0; i < q.Answers.Count; i++)
+            {
+                var btn = new Button
+                {
+                    Content = q.Answers[i],
+                    Tag = i,
+                    Margin = new Thickness(5),
+                    MinWidth = 200
+                };
+                btn.Click += QuizAnswerButton_Click;
+                QuizAnswersPanel.Children.Add(btn);
+            }
+            QuizFeedbackTextBlock.Text = "";
+        }
+ 
 
