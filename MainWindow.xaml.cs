@@ -283,6 +283,83 @@ namespace CyberSecurityChatbotWPF
                 AddActivity("Chatbot gave a fallback response.");
             }
         }
+        // TASK ASSISTANT 
 
-    }
-}
+        private bool TryHandleTaskCommands(string input)
+        {
+            if (input.StartsWith("add task") || input.StartsWith("add a task") || input.StartsWith("add reminder") || input.StartsWith("remind me"))
+            {
+                AddChatbotMessage("Please add your task details using the 'Tasks' tab.");
+                MainTabControl.SelectedIndex = 1; // Tasks tab
+                AddActivity("User requested to add a task.");
+                return true;
+            }
+
+            return false;
+        }
+
+        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            string title = TaskTitleTextBox.Text.Trim();
+            string desc = TaskDescriptionTextBox.Text.Trim();
+            DateTime? reminder = TaskReminderDatePicker.SelectedDate;
+
+            if (string.IsNullOrEmpty(title))
+            {
+                MessageBox.Show("Task Title is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var task = new TaskItem
+            {
+                Title = title,
+                Description = desc,
+                Reminder = reminder,
+                IsCompleted = false
+            };
+
+            tasks.Add(task);
+            RefreshTaskList();
+            AddActivity($"Added task: '{title}'" + (reminder.HasValue ? $" with reminder on {reminder.Value.ToShortDateString()}" : ""));
+
+            // Clear inputs
+            TaskTitleTextBox.Clear();
+            TaskDescriptionTextBox.Clear();
+            TaskReminderDatePicker.SelectedDate = null;
+
+            AddChatbotMessage($"Task added: '{task.Title}'. Would you like to set a reminder for this task?");
+        }
+
+        void RefreshTaskList()
+        {
+            TasksListView.ItemsSource = null;
+            TasksListView.ItemsSource = tasks;
+        }
+
+        private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is TaskItem task)
+            {
+                tasks.Remove(task);
+                RefreshTaskList();
+                AddActivity($"Deleted task: '{task.Title}'");
+            }
+        }
+
+        private void TaskCompleted_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox cb && cb.DataContext is TaskItem task)
+            {
+                task.IsCompleted = true;
+                AddActivity($"Marked task as completed: '{task.Title}'");
+            }
+        }
+
+        private void TaskCompleted_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox cb && cb.DataContext is TaskItem task)
+            {
+                task.IsCompleted = false;
+                AddActivity($"Marked task as incomplete: '{task.Title}'");
+            }
+        }
